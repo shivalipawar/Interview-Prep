@@ -1,0 +1,79 @@
+Consistent Hashing -
+used when we want to increase the servers and this causes change at load balancer algorithm too for it.
+When we add new server in a architecture its needs to rehash complete table at load balancer creating havoc as specific server points to some db and has the user stored there.
+Also when a server fails it creates load on any one of the server which is close to the hash of request in circle with hash of req and hash of server stored.
+ So consistent hashing uses multiple hash functions and so multiple buckets use servers at most places so even a server fails we have some server still close than being very far.
+
+Load balancing ensures we don’t send out duplicate orders to the servers. As when we use consistent hash the failed server req will be added to other servers bucket.
+
+Messaging Queue -
+Messaging Queues provide useful features such as persistence, routing and task management. We will be discussing the benefits of a message queue in future videos. A system having a message queue can move to higher level requirements while abstracting implementation details of message delivery and event handling to the messaging queue. The 'queue' is just a name for this data structure. In practice, it could be storing messages using any policy. Some examples of message queues are Kafka and RabbitMQ. They are widely used for various purposes such as command query request segregation (CQRS) and event sourcing.
+
+Monolithic vs Micro Services
+
+Advantages: 1) The microservice architecture is easier to reason about/design for a complicated system.
+2) They allow new members to train for shorter periods and have less context before touching a system.
+3) Deployments are fluid and continuous for each service.
+4) They allow decoupling service logic on the basis of business responsibility
+5) They are more available as a single service having a bug does not bring down the entire system. This is called a single point of failure.
+6) Individual services can be written in different languages.
+7) The developer teams can talk to each other through API sheets instead of working on the same repository, which requires conflict resolution. 8) New services can be tested easily and individually. The testing structure is close to unit testing compared to a monolith.
+Microservices are at a disadvantage to Monoliths in some cases. Monoliths are favorable when:
+1) The technical/developer team is very small
+2) The service is simple to think of as a whole.
+3) The service requires very high efficiency, where network calls are avoided as much as possible.
+4) All developers must have context of all services.
+
+Database Sharding :
+Sharding is horizontal partitioning of data according to a shard key. This shard key determines which database the entry to be persisted is sent to. Some common strategies for this are reverse proxies.
+
+Horizontal - sets of data is assigned to specific db as per some key eg:- 1-100 in shard1, 101-200 shard2…
+Vertical - based on column meaning columns on different shards. Eg:- name , address in shard1 , desgination, salary shard2.
+
+* Sharding is basically a hiearchical way to index databases.
+* One problem is that you have to split the database somehow. What do you split on?
+* You only shard shards when the shard grow too big.
+* When shard fails you use the master/slave architecture. Writes always go to master, reads are distributed across the slaves. When the master fails one of the slaves become master.
+
+Cache:
+
+Why caching ->
+	 Reduce network calls.
+	Avoid recomputations. Eg:- when we need avg age of user so rather than compute everytime do it once.
+	Reduce DB load.
+Cases when not to use cache -->
+	Cache is become larger then search time increases so better go to DB.
+	Hardware for cache is expensive than DB as it uses SSD.
+Cache performance depends on cache policy.
+	1. LRU - Keep most used pages on top and least used ones at bottom and remove from bottom.
+	2. LRU - Not used widely
+	3. Sliding Window
+Issues with Cache :-
+	Bad Eviction policy
+	Cache Miss or thrashing cause its very small.
+	Data Inconsistent a updated one is in db and cache holds old data.
+Where to place cache :-
+	In mem to a server if lesser calls and want to save on network calls. Data inconsistent as each instance of server may have diff data and critical data shouldn’t be here.
+	Global cache -
+Cache Updation Policy
+	Write through - Update the cache first and then Db. But will be consistency issue when its in mem cache.
+	Write back - Check in cache if key is present then remove it and update db. When requested by user if not in cache pull from db. Issue of thrashing can occur here.
+
+Pub Sub
+
+This type of architecture relies on message queues to ensure event passing. An example would be rabbitMQ or Kafka. The architecture is common in real life scenarios and interviews. If there is no strong consistency guarantee to made for transactions, an event model is good to use in microservices
+
+Advantages :-
+1) Decouples a system's services.
+2) Easily add subscribers and publishers without informing the other.
+3) Converts multiple points of failure to single point of failure.
+4) Interaction logic can be moved to services/ message broker.
+
+Disadvantages:
+1) An extra layer of interaction slows services
+2) Cannot be used in systems requiring strong consistency of data
+3) Additional cost to team for redesigning, learning and maintaining the message queues.
+
+
+
+

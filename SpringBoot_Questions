@@ -1,0 +1,252 @@
+	1. Why HttpServlet and HttpServletResponse?
+Use HttpServletRequest and HttpServletResponse when we want to modify request or response i.e. customization.
+https://stackoverflow.com/questions/57898415/read-httpservletrequest-object-from-spring-boot-controller-method
+	2. Why builder pattern -
+ https://www.vogella.com/tutorials/DesignPatternBuilder/article.html  Create immutable class.
+	3. Cant autowire entity class and transaction?
+@Entity is JPA entity i.e. rows in db and not spring managed entitities. So cant inject them directly.
+	4. @Entity and @Table annotation ?
+@Entity specifies that class is entity and mapped to db table. @Table specifies the name of db table.
+	5. Can we use @Data and @Entity together?
+Yes we can use it but attention - Equals, hashCode and toString can go to conflict with JPA spec or with "lazy load"
+	6. H2 database: NULL not allowed for column "ID" when inserting record using jdbcTemplate
+Try to use strategy=GenerationType.IDENTITY instead of the strategy=GenerationType.AUTO . IDENTITY Indicates that the persistence provider must assign primary keys for the entity using a database identity column. AUTO Indicates that the persistence provider should pick an appropriate strategy for the particular database. The<code>AUTO</code> generation strategy may expect a database resource to exist, or it may attempt to create one.
+	7. What is hibernate and orm in springboot do?
+	8. Example of REST API with mysql in springboot - REST with MYSQL tut - https://hevodata.com/learn/spring-boot-mysql-integration/
+	9. Why use responseEntity in springboot ?
+	ResponseEntity is meant to represent the entire HTTP response. You can control anything that goes into it: status code, headers, and body.
+	@ResponseBody is a marker for the HTTP response body and @ResponseStatus declares the status code of the HTTP response.
+	@ResponseStatus isn't very flexible. It marks the entire method so you have to be sure that your handler method will always behave the same way. And you still can't set the headers. You'd need HttpServletResponse.
+	Basically, ResponseEntity lets you do more.
+	From <https://stackoverflow.com/questions/26549379/when-use-responseentityt-and-restcontroller-for-spring-restful-applications>
+	10. Error -Field common in com.example.quora.service.UserService required a bean of type com.example.quora.service.utils.Common' that could not be found.
+	The injection point has the following annotations:
+		- @org.springframework.beans.factory.annotation.Autowired(required=true)
+---> So issue was it wasn’t declared as Service or Component.
+	11. What bean lifecycle in springboot?
+	12. Issue - a-column-in-a-table-is-referred-to-by-multiple-physical-column-names
+	 https://stackoverflow.com/questions/57691377/a-column-in-a-table-is-referred-to-by-multiple-physical-column-names
+	13. Jpa - join table annotation
+	https://stackoverflow.com/questions/5478328/in-which-case-do-you-use-the-jpa-jointable-annotation
+	14. Repeated column in mapping for entity: com.example.quora.models.database.Answer column: question_id (should be mapped with insert="false" update="false")
+	https://stackoverflow.com/questions/15076463/another-repeated-column-in-mapping-for-entity-error
+	15. api returns jsonobject but response shows empty=false
+	https://stackoverflow.com/a/59278028
+	16. Difference between Spring and  Spring boot - SPRING BOOT Vs SPRING - A Comparison
+
+	Spring solved the issue of
+		dependency injection.
+		Reduce boilerplate code like for jdbc,etc.
+		Good integration with frameworks like hibernate, junit,etc
+	Disadvantage -
+		Still had to do a lot of configurations in xml file. Eg:- spring mvc needed component scan, dispatcher servlet, view resolver and web jars.
+
+	Spring boot came to solve the issue of time taken to develop and deploy java application.
+	Adv -
+		Auto config
+		Starter files - so for web include spring-web-starter and it will auto add dependency like springboot- s-autoconfigure, logback,tomcat-server,validation,sb-core, jackson-data-binding,etc
+
+	17. Explain Spring boot auto configuration?
+	It auto configure i.e. create bean of data source if hibernate jar is on classpath.
+	It auto configure a dispatcher servlet if spring mvc jar is on classpath.
+
+	17. What is auto configuration class ?
+	@ComponentScan and @EnableAutoConfig has to be always used with @Configuration in base package as it is start point.
+	@ComponentScan - has to be in base package so spring picks it up a main path to scan annotations like @Bean, @Controller, @Entity,etc.
+	@EnableAuto Config in default base package then it can create beans for subpackage from base package.
+	To exclude auto configure use exclude - with list of class from auto configure like JdbcTemplateAutoConfig.class
+	 or excludeNames - with list of full qualified names like org.springframework.boot.autoconfigure.jdbc.JdbcTemplate.AutoConfigure
+
+	@Configuration in Springboot -
+
+	Basically I find this method of declaring beans much more comfortable than using XMLs due to a few advantages I see:
+		1. Typos - @Configuration classes are compiled and typos just won't allow compilations
+		2. Fail fast (compile time) - If you forget to inject a bean you'll fail on compile time and not on run-time as with XMLs
+		3. Easier to navigate in IDE - between constructors of beans to understand the dependency tree.
+		4. Possible to easily debug configuration startup
+	The disadvantages are not many as I see them but there are a few which I could think of:
+		1. Abuse - Code is easier to abuse than XMLs
+		2. With XMLs you can define dependencies based on classes that are not available during compile time but are provided during run-time. With @Configuration classes you must have the classes available at compile time. Usually that's not an issue, but there are cases it may be.
+	From <https://stackoverflow.com/questions/24014919/understanding-spring-configuration-class>
+
+	Eg:- We have a starter like springboot-web-starter or test-starter in side that META-INF folder with spring.factories file has the conditional attribute what should be enabled and disabled. Eg:- JPARepository class in spring.factories has ConditionalOn when datasource is given, ConditionalOn when class found in classpath etc. This is kind of auto configure.
+	Eg:- We have web-starter used so it creates beans for packages needed from started like tomcat and spring mvc . Auto config can be overridden by custom config.
+	Eg:- If HSQLDb is present on your classpath and you have not configured any database manually, spring will create its bean .
+
+
+
+
+	18. Actuator in springboot - Actuator is mainly used to expose operational information about the running application — health, metrics, info, dump, env, etc. It uses HTTP endpoints or JMX beans to enable us to interact with it.
+	https://www.baeldung.com/spring-boot-actuators
+
+	19. Dispatcher servlet in spring - https://www.java67.com/2017/06/what-is-use-of-dispatcherservlet-in-spring-mvc.html
+
+	20. What is bean ?
+	A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container. There's  a example where student class needs address as dependency so we mark it a bean and give it in config class and it gets picked up.
+	https://www.baeldung.com/spring-bean
+
+	21. How does sprinboot start internally? How Spring Boot Application Work Internally | Example | Java Techie
+
+	It looks out for annotations eg:- @Repository , @Entity arent dependent on anyone so getBeanFactory() returns the instance of it and getBean() from beanLifecyle. Then repository is required by service then it goes to service and if all needed dependencies are found prepares its bean. Then this bean is someone controller or component dependency hence passed to it and in turn controller bean is sent to dispatcherServlet to handle the request.
+	From the run method, the main application context(canbe of type web app, servlet, default class) is kicked off which in turn searches for the classes annotated with @Configuration, initializes all the declared beans in those configuration classes, and based upon the scope of those beans, stores those beans in JVM, specifically in a space inside JVM which is known as IOC container. These classes are bind to specific context by register() of constructor of context class. After the creation of all the beans, automatically configures the dispatcher servlet and registers the default handler mappings, messageConverts, and all other basic things.
+	From <https://stackoverflow.com/questions/44172261/how-spring-boot-application-works-internally>
+
+	22. Lifecycle of bean?
+	https://dzone.com/articles/spring-bean-lifecycle
+	https://www.geeksforgeeks.org/bean-life-cycle-in-java-spring/#:~:text=Bean%20life%20cycle%20is%20managed,the%20spring%20container%20is%20closed.
+	23. Difference between bean and java class? https://www.shaunabram.com/beans-vs-pojos/
+	24. How different type of implementation will be used for same interface in java and springboot
+	25. What is dependency injection?
+	It means passing the dependencies need for a method to work rather than creating them in the method.
+	26. Default view resolver in springboot?
+	27. How security is achieved in springboot?
+	28. Cosmos db integration with Springboot?
+
+	29. Grpc implementation in springboot ?
+	Sample client server - https://www.baeldung.com/grpc-introduction
+	Springboot app server to work needs - https://github.com/LogNet/grpc-spring-boot-starter and io.grpc-bom
+	Blocking stub or future - https://stackoverflow.com/questions/48419014/grpc-creating-blocking-or-future-stubs
+
+	30. How to solve cyclic dependency in springboot?
+	Say a example A autowire B and B autowire A. So to resolve extract it to 3rd party service and then use A in it.
+	Use lazy loading.
+	Use setter injection.
+	Using @PostConstruct.
+	Use ApplicationContextAware and InitializeBean. https://www.baeldung.com/circular-dependencies-in-spring
+
+	31. What is @Qualifier and @Primary and where do u use it?
+	@Primary indicates that a bean should be given preference when multiple candidates are qualified to autowire a single-valued dependency.
+	@Qualifier indicates specific bean should be autowired when there are multiple candidates.
+	https://stackoverflow.com/questions/56642356/when-to-use-qualifier-and-primary-in-spring#:~:text=%40Primary%20indicates%20that%20a%20bean,both%20implement%20the%20same%20interface.
+
+	32. What is @Bean and @Scope ?
+	https://www.baeldung.com/spring-bean-scopes
+	@Scope - We use @Scope to define the scope of a @Component class or a @Bean definition. It can be either singleton, prototype, request, session, globalSession or some custom scope.
+	@Bean - The @Bean annotation returns an object that spring should register as bean in application context. The body of the method bears the logic responsible for creating the instance.
+
+	33. What is microservice, its pros and cons?
+	Simple service having single responsibility eg:- auth service, login service.
+	Pros :-
+	Development is faster as smaller modules can be developed independently.
+	Not single point of failure.
+	Scalability can be achieved easily.
+	Cons :-
+	Communication can cause delay.
+	Implement changes across service has to be done carefully.
+	It’s a distributed system and brings its own complexity of deploying and testing.
+
+	34. Communication btwn microservice and circuit breaker pattern?
+	Is it sync like we wait till response or if its async then its uses kafka message queues. They communicate by REST APIS within them making is sync. Also can communicate via kafka stream where one microservice is a producer and other is consumer. .
+	Circuit breaker pattern makes each microservice implement hystrix which has callback in class of each service that has overridden call to method which specific response when a microservice fails. So if out of 4 ms 1 fails we say its failed but with this pattern we come to know which is failed and give appropriate response. So this helps us to avoid cascading fallback.
+	Hystrix circuit breaker And Fault Tolerance in Microservices Spring boot |Microservices in Java
+
+	35. How to use another server instead of embedded tomcat? https://dzone.com/articles/spring-boot-changingconfiguring-the-default-embedded-server
+
+	36. Global exception handling annotation?
+	For Centralized exception handling use @ControllerAdvice and extend ResponseEntityExceptionHandler and add methods for generic exception with annotation @ExceptionHandler(exceptionname.class) whose return type is ResponseEntity<ErrorResponse> with input params as webreq and exception ex
+
+	37. What is refresh page and reload page in springboot?
+
+	38. Default scope of bean in springboot?
+	Default scope of a bean is a singleton, only one shared instance of the bean will be managed and all requests for beans with an id or ids matching that bean definition will result in that one specific bean instance being returned. Only when you have to keep some session details you should use for example session scope.
+
+	39. How multiple req are handled by springboot?
+	Every web request generates a new thread as explained in this thread. Spring manages different scopes (prototype, request, session, singleton). If two simultaneous requests access a singleton bean, then the bean must be stateless (or at least synchronized to avoid problems).
+
+	40. Diff between restcontroller and controller?
+	@Controller is used to mark classes as Spring MVC Controller.
+	@RestController is a convenience annotation that does nothing more than adding the @Controller and @ResponseBody annotations and returns response as JSON/XML automatically.
+
+	41. How do I enable and disable a bean in Spring boot?
+	In Spring Boot, you can use the @ConditionalOnProperty annotation to enable or disable a particular bean based on the presence of a property. This is very useful if you want to provide optional features to your microservice. And that's it. Your optionalClass bean should resolve to null when you specify mybean.
+	@ConditionalOnProperty(value='mybean.enabled')
+	@Bean
+	MyOptionalClass optionalBean(){
+	}
+	Any place where you want this bean used, you should specify that is it optionally required:
+		@Autowired(required=false)
+		MyOptionalClass optionalClass
+	And that’s it. Your optionalClass bean should resolve to null when you specify mybean.enabled=false in your application.properties or system property file, or if it does not exist.
+
+	42. How do I disable ComponentScan or avoid auto config? How to disable loading and creation of bean of sub packages?
+	https://docs.spring.io/spring-boot/docs/1.4.x/reference/html/using-boot-auto-configuration.html#:~:text=If%20you%20find%20that%20specific,of%20%40EnableAutoConfiguration%20to%20disable%20them.&text=If%20the%20class%20is%20not,the%20fully%20qualified%20name%20instead.
+	To disable the default filter, set the useDefaultFilters element of the @ComponentScan annotation to false. Eg:-
+	@Configuration
+	@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+
+	Filters can be of two types: include and exclude filters. As their names suggest, include filters specify which types are eligible for component scanning, while exclude filters specify which types are not.
+	You can use the include and/or exclude filters with or without the default filter. To disable the default filter, set the useDefaultFilters element of the @ComponentScan annotation to false.
+	@Configuration
+	@ComponentScan(value = "guru.springframework.blog.componentscan.example.demopackageA",
+	        useDefaultFilters = false)
+
+	43. How to remove bean from context
+	https://tedblob.com/spring-boot-remove-bean-from-context/
+
+	44. Can we replace @repository with @component?
+	According to documentation @Repository , @Service , @Controller are all synonyms. They all are just specializations of @Component annotation. So, generally, they can be used one instead of other
+
+	45. Add multiple data sources in springboot - https://www.yawintutor.com/how-to-connect-multiple-databases-using-spring-boot/#:~:text=Spring%20boot%20allows%20you%20to,JPA%20from%20a%20single%20application.
+
+	46. Springboot hibernate-jpa-ddl-auto-create property - https://stackoverflow.com/questions/42135114/how-does-spring-jpa-hibernate-ddl-auto-property-exactly-work-in-spring
+
+	47. Explain annotations of springboot?
+	@Configuration - Says I'm the class that will build and give all the beans to spring container.
+	@EnableAutoConfiguration - Will actually create all the beans needed.
+	@ComponentScan - Looking in all sub package of project and check where which bean is needed.
+	@Target - Specifies type where it is used like method, constructor, field, etc
+	@Retention - Class level or read level or runtime level
+	@Inherited - Should be inherited to sub class too.
+	@Autowired - It is used to inject the bean at runtime.
+	@Transient - Avoid that field to be mapped to your database.
+	@Component - Marks this as java class as bean.
+	@Controller - Specialized component which is marked as web request handler and to serve web pages with RequestMapping. It returns string with its path to the ui page it gets redirected or loaded. @RestController returns the response in form of json/xml.
+	@Service - Is also special component but can be replaced with @Component and still will work same.
+	@Repository - Again special type of component but does operation related to db. It helps in catching platform specific exceptions re throw them a spring's unified unchecked exception.
+	48. Any class marked as @Configuration or @SpringbootConfiguration is a bean yes , coz its @Component at the end which becomes bean in container.
+
+	49. What is DDD in microservices? - https://semaphoreci.com/blog/domain-driven-design-microservices This is followed for heavy and larger microservices but for smaller we mostly follow TDD or BDD.
+
+	50. How to create custom queries in JPA or use @NamedQueries?
+	https://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-three-custom-queries-with-query-methods/
+	Query Creation from method name - i.e. findByNameAndId so query to find user by name and id is created. Problem here is you cant user lower keywords in your method names.
+	@NamedQuery or @NAtiveQuery - This annotation is used at entity level and is useful if application is small otherwise entities will be a lot cluttered.
+	@Query - This annotation will override @NameQuery annotation if both are present. This is written at top of method in any repository class.
+
+	51. What is difference between JPA and hibernate ?
+	JPA : Java persistence api which provide specification for persisting, reading, managing data from your java object to relations in database.
+	Hibernate: There are various provider which implement jpa. Hibernate is one of them. So we have other provider as well. But if using jpa with spring it allows you to switch to different providers in future.
+	Spring Data JPA : This is another layer on top of jpa which spring provide to make your life easy.
+	From <https://stackoverflow.com/questions/23862994/what-is-the-difference-between-hibernate-and-spring-data-jpa>
+
+	52. What is transaction propagation in springboot? -- https://www.baeldung.com/spring-transactional-propagation-isolation
+	https://dzone.com/articles/spring-transaction-propagation
+	Propagation defines our business logic's transaction boundary. Spring manages to start and pause a transaction according to our propagation setting.
+	Spring allows you to control the behavior of logical and physical transactions via transaction propagation mechanisms.
+
+	Required - checks if existing transaction then appends it or create new.
+	Support - checks if transaction then appends or executes non transactional.
+	Mandatory - checks if transaction then appends or throws exception
+	Never - if active transaction then throws exception.
+
+	53. Template design pattern or other design pattern in springboot?
+
+MySQL integration in springboot -
+https://spring.io/guides/gs/accessing-data-mysql/
+
+How to create mysql server from docker image - http://www.devgi.com/2018/11/install-mysql-docker-windows.html
+
+CREATE USER 'root'@'%' IDENTIFIED BY 'root';
+
+Fails as user already exist and so move to changing its permission.
+
+User related info - https://www.mysqltutorial.org/mysql-show-users/
+
+
+MySQL docker image of server password -  GENERATED ROOT PASSWORD: 1_470cjT4+CU1esN,aMn64L;Egb.;+B_
+Later password of mysql connection is username - root , password-root
+
+DELETE command doesn’t work on foreign key eg:-
+In answer table question_id is foregin key so
+Delete from answer where question_id=1      // fails
+So try delete with column of answer table which arent foreign

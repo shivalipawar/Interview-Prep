@@ -1,0 +1,51 @@
+	1. Find one duplicate from array - there is a formula for it.
+	2. Mirror of tree
+	3. Create a map and sort it by values using lambda and convert to other ds using stream. --> https://javaconceptoftheday.com/java-8-sort-hashmap-by-values/
+	4. Given array of ints with duplicate , remove duplicate and find square of elements. --> Sort and use pointers, set, hashmap
+	5. Swap numbers with any 3rd variable
+	Problem ===> Swapping
+	a=12;
+	b=14;
+	output:
+	a=14;
+	b=12;
+
+	a=12
+	b=14
+	a=12+14 = 26
+	b = a-b 26-14 = 12
+	a = a-b 26-12 = 14
+	6. Given a number like 25489 return count of digits in the number - o/p = 5
+	int countOfNumbers(int input){
+	int count = 0;
+
+	while(input > 0){
+		int rem = input %10;
+		input = input/10;
+		count++;
+	}
+	return count;
+	}
+
+	7. Given 2 array of ints merge them , eg:-
+	int[] a = {1,2,3}
+	int[] b = {7,9,8,4}
+	int[] result = {1,7,2,9,3,8,4}
+	8. Given string array as
+	Input = {apple,banana,chikoo}
+	Output = {a:4,b:1,c1…}
+	9. Given a string find out if its valid or invalid
+	Valid - [{}],<{[]}>
+	Invalid - >{<}, [}]
+	10. Find a target value from a rotated sorted array?
+	11. Find a peak element from a array where peak means where on left and right is a smaller value than of current. For first and last element its just one element besides them?
+	Eg:- {10,20,15,30,90,60} so here 20 and 90 is peak you can return anyone of them.
+	12. Given an array with positive and negatives write function to move all negatives at start?
+	Eg:- [1,5,4,-9,-3,0]
+
+
+Links with problem statements to solve :-
+
+https://www.interviewbit.com/coding-interview-questions/?utm_source=ib&utm_medium=midfunnel/#topics[]=arrays
+
+

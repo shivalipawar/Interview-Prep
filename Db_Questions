@@ -1,0 +1,91 @@
+Key Differences Between Primary key and Unique key:
+Primary key will not accept NULL values whereas Unique key can accept NULL values.
+1. A table can have only one primary key whereas there can be multiple unique key on a table.
+2. A Clustered index automatically created when a primary key is defined whereas Unique key generates the non-clustered index.
+
+From <https://www.geeksforgeeks.org/difference-between-primary-key-and-unique-key/>
+
+	1. DB Index
+	Eg :- emp id and name and if index is on name how to find his emp id.
+	So in Balanced -Tree there is row id created and used by internal impl of db that can in turn help us to find out about emp id.
+
+	Why should we have indexing in db - Make reading or accessing faster.
+	Most of the apps differ oz of their very slow queries. Bad index also causes issue.
+
+	Adv of index -
+	Searching for a value is fast.
+	Logarithm scalability
+	Grouping of records
+	Easier maintenance of unique columns.
+
+	Disadv -
+	Writes i.e. Updates, Inserts and Delete become slower.
+	Non clustered index take up extra disk space.
+
+	The clustered index used in SQL doesn't take any extra space as it stores the physical order of the table records in the database. Since there is only one physical order of the table, there is only one clustered index.
+	A clustered index is used to define the order or to sort the table or arrange the data by alphabetical order just like a dictionary.
+
+	Non clustered indexes are separate structures from the data rows in the table. It reorders one or more columns as the logical order is different from the physical order. The physical order of data is the order in which it gets stored in the database.
+	A non-clustered index collects the data at one place and records at another plac
+	https://www.scaler.com/topics/sql/advantages-and-disadvantages-of-indexing-in-sql/
+
+	Times Index is not used -
+	For query like - select sum(total) from orders where year(created_at)= 2013
+	So here created_at returns number and we applied index on string i.e. created_at which doesn’t match so full table scan is done and index is unused.
+
+	If we create index on age, gender, location while querying only one column index is used and not all 3 of them.
+
+	2. What is difference between "having" and "where" clause?
+	https://www.geeksforgeeks.org/difference-between-where-and-having-clause-in-sql/
+
+	3. What is diff btwn inner join and outer join?
+	Inner join - takes union of both table meaning only common rows for specific condition are taken up.
+	Outer join - is of type left, right or full outer join. Left outer join takes all values of a column from left table. Right outer join takes all values of a column from right table. Full outer join takes both column values for given condition. NULL value is inserted if no value is present in table.
+
+	5. Adv and disadvantages of cosmos db?
+	Multi-tenant application have large data and this make sures of availability and scalibility.
+
+	6. What is sharding? -What is Database Sharding?
+	In RDBMS horizontal scaling is not by default present, so in order to make this happen db is sharded by row. So rows are distributed across various db instances. At upper layer we take decision of which shard to go to fetch result are they r predefined as per some condition i.e. key. When it comes to vertical sharding we use column as partition key. Some disadvantages - Number of shards are fixed, Maintain master slave of server support availability, joins across shards is tedious.
+	7. Which NoSQL db supports which part of CAP theorem? https://www.instaclustr.com/blog/cassandra-vs-mongodb/#:~:text=According%20to%20the%20CAP%20theorem,configured%20to%20meet%20specific%20requirements.
+	Mongo - CP
+	Cassandra - AP
+	Cosmos - CP (https://asifwaquar.com/understand-cap-theorem-and-its-use-case-using-cosmos-db/ , https://www.sqlshack.com/8-things-know-azure-cosmos-db-formerly-documentdb/)
+
+	8. What is CAP theorem?
+	Consistent - Data across all replicas and nodes to be same and of most recent write.
+	Availability -All reads contain data, but it might not be the most recent.
+	Even when there's a failure of one of the node i.e. whether primary or secondary is down one will come up.
+	Partition tolerance - So replica sets help achieve this. Ensures more than half of replicas  are connected.
+	https://stackoverflow.com/a/44440201
+	9. What is PACELC over CAP ?
+	Its extended version of CAP saying - The PACELC theorem further extends this idea to say that for everything else (E) that happens when there are no network partitions, one must choose between latency (L) and consistency (C).
+
+	10. What is diff btwn delet and truncate and drop?
+	Delete -> can delete single or multiple rows. We can use Rollback as it doesn’t use auto commit.
+	Truncate -> Deletes all of throws at once and no option to delete only few of them. We cannot use Rollback.
+	Drop -> Deletes the table and its structure too.
+
+	11. What is rowid, rank and dense rank in sql?
+	https://stackoverflow.com/a/22081083
+
+	12. Which queries are faster compared to sub query or order by? Modification by creating new table from existing based on condition rather than of sub or nested query as latter is n*n i.e. n2 complexity.
+	Joins are bit slower than accessing same table multiple rows at once.
+
+	Database Design Questions :-
+	https://nehajirafe.medium.com/data-modeling-designing-facebook-style-comments-with-sql-4cf9e81eb164
+
+	DB SQL Query Question :-
+	https://www.edureka.co/blog/interview-questions/sql-query-interview-questions#fetchname
+
+
+Queries
+
+Select 10th highest salary person from SQL ->
+SELECT salary FROM Employee ORDER BY salary DESC LIMIT N-1, 1
+
+OR Select salary from employee e where 9 =(select salary from employee e2 where e.salary > e2.salary)
+
+From <https://javarevisited.blogspot.com/2016/01/4-ways-to-find-nth-highest-salary-in.html#axzz7XZdIKDmA>
+
+

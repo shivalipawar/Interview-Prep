@@ -1,0 +1,76 @@
+Bascis course - Docker Tutorial for Beginners [2021]
+
+Notes :-
+List images :- docker image ls or docker images
+Build docker image :- docker build -t <somename> <dockerfilepath>
+Pull docker image :- docker pull <image name> i.e. from docker hub
+	If not on docker hub then use it from specific docker registry within the org.
+Pull and run image :- docker run ubuntu (If image is not locally present it'll pull and then run it)
+Docker run
+Show docker process :- docker ps
+				Docker ps -a (hidden and terminated processes)
+				Docker run <container-name> -d :- This will start container in detached mode and returns id when container is created.
+				Docker start/stop <container_id> :- This will start or stop the container.
+				Docker run -p <machineport>:<containerexposedport> :- This will create and start docker container and bind to specific port on laptop or any machine. Eg:- docker run -p 6000:6397 redis
+				Docker run --name redis-older redis:4.0 :- This will run new container locally with name given and not default name given by author.
+Logs and debug docker :-
+	Docker logs <container_id> or
+	Docker logs <container_name> - Gives logs on container
+	Docker exec -it <container_name> /<id> - Opens the shell of the container. To exit this shell type "exit".
+Remove -
+Docker rm <container_id > - Removes the container
+Docker rmi <image_id> - removes the image
+Start interactive terminal in container -
+Docker exec -it <container_id> ./bin/sh
+Docker image prune - removes unused images having no container or dangling reference.Remove all dangling images. If -a is specified, will also remove all images not referenced by any container
+Docker system prune - Remove all unused containers, networks, images (both dangling and unreferenced), and optionally, volumes.
+
+Ports :-
+Always docker images expose a port from within. To make it accessible we'll have to expose it to some port on our local machine otherwise we can't access the data inside container.
+
+Docker example Mongo-Nodejs project -
+	1. Pull images for mongo and mongo-express on local docker
+	2. Docker run mongo with following command -
+	docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --name mongodb --net mongo-network mongo
+	3. Test the status of mongo container -
+	docker logs 2bf9935e8acbcb67dcf4c1bc8a5c125fce52e0a678f9770fdb62af1f62dcc0f9
+	4. Start mongo express image -
+	docker run -d -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password --net mongo-network --name mongo-express -e ME_CONFIG_MONGODB_SERVER=mongodb mongo-express
+	Mongo db server name can be found out from - docker ps - shows current mongodb process running
+
+	Also test the status by logs command just like we did for mongo container.
+Do this commands repeatedly instead create docker compose file with these commands in a different fashion. This will easily get up both services running as mentioned in docker compose file. Plus it creates network on there on.
+
+Docker example of MySQL server -  https://hub.docker.com/_/mysql
+	1. Pull image of sql server.
+	2. docker run --name mysql-docker -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e MYSQL_DATABASE=quoraapp -p 3306:3306 -d mysql/mysql-server:latest
+	3. Docker logs mysql-docker
+	4. Start interactive shell for docker - winpty docker exec -it mysql-docker mysql -uroot -p
+	5. To make sql db to be persistent even if docker container is stopped -
+	docker run --name mysql-docker -v /c:/quoradb:/var/lib/mysql -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e MYSQL_DATABASE=quoraapp -p 3306:3306 -d mysql/mysql-server:latest
+	Modify the permission for root and root% user by -
+	ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
+	CREATE USER 'root'@'%' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+	SHOW GRANTS FOR 'root'@'%';
+
+
+Creating DockerFile
+
+From Node - Fetching node environment as image from the docker hub
+ENV username=… password =… - Setting  mongo username and password.
+RUN mkdir -p /home/app - this will create a directory within container file structure.
+COPY . /home /app - this will copy contents from host machine to within container (there' s other thing RUN cp . /home/app which will copy files from and to container directory only and not from host machine)
+CMD ["node","server.js"] - this will execute as node server.js and entry point to container. We could write RUN [node,server.js] but we wanted it to be entry point so changed it.
+
+Build locally created image by add a name and tag - docker build . -f ./.dockerfile -t node-mongo-docker:1.0
+Any change or issue with docker image have to delete existing image and rebuild new one as it doesn’t overwrite it.
+
+Interview Question -
+
+	1. Diff btwn entry point and cmd in docker? -->  https://www.bmc.com/blogs/docker-cmd-vs-entrypoint/
+CMD -  command has default parameters that can be overridden by command line args. These are like additional set of arguments.
+ENTRYPOINT - this command parameters can't be overridden and is always with command line args rather with compulsory parameters command line args are appended at end. These instructions  are added when needed always while docker image build.
+	2. What is docker compose?
+Docker compose is used to combine multiple services as one and execute it. Eg:- A Nginx service and redis db can be together executed in compose file which can be in yml. Supports command like docker compose up , down and scale , ps ,etc.
+https://www.simplilearn.com/tutorials/docker-tutorial/docker-compose

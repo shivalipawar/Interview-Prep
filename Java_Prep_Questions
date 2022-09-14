@@ -1,0 +1,402 @@
+https://www.interviewbit.com/java-interview-questions/
+
+Bit manipulation :- https://www.interviewcake.com/concept/java/bit-shift
+
+Java 8 - Missing tutorial - https://github.com/shekhargulati/java8-the-missing-tutorial/blob/master/02-lambdas.md
+
+Streams -
+Boxed () - Returns a Stream consisting of the elements of this stream, each boxed to an Integer.eg:- Trials of leetcode practice.
+Function.identity() - Returns the input argument as is.
+Collections.frequency(collection, element) -> Returns count for each element in collection.
+
+Custom functional interface - https://www.baeldung.com/java-8-functional-interfaces
+https://www.tutorialspoint.com/how-to-create-our-own-custom-functional-interface-in-java -- simple example.
+
+What is high cohesion and loose coupling ?
+High Cohesion - high cohesion means keeping parts of a code base that are related to each other in a single place.
+Low coupling - is about separating unrelated parts of the code base as much as possible.
+
+Does map have duplicate/multiple values for a key ? Yes its possible for that key stores a list but not duplicate.
+
+Object.equals and String.equals -->
+Object.equals checks for the equality of references. But if we override the equals we can mention to check values too.
+String.equals checks for each character equality.
+
+How HashMap works internally - How HashMap Works in Java | Internal Implementation of HashMap Just instead of linked list from java8 balanced binary tree is used for faster search and insertion.
+https://medium.com/javarevisited/internal-working-of-hashmap-in-java-97aeac3c7beb
+Normal map can be sync by collection.sync(mapobj)
+
+How hashcode method works?
+When hashmap is declared and initialized it creates array of size 16 if not specified. When we want to put or get then,
+Eg:- PUT ("A",1)
+Key is passed to has function eg:- Key = A hashFunc(A) returns 65 so this is hashCode
+Index is calculated as - hashCode & (size of hashmap -1) eg :- 65 & (16-1) = 1
+So do the put operation at index 1 in array created is in form
+65	A	1	null
+
+If while put index is same we start by checking if  hashcode is same if not insert it after linked list at that index. If hashcode is same meaning the existing key's value is to be changed. This index being same in hashmap is called collision.
+NULL as key is allowed in hashmap.
+
+While GET in hashmap we again do same calculation for hashcode and index then got to index in array check if hashcode map then check if key map then return value. If hashcode doesn’t match not found at calculated index.
+
+How hashcode method calculates unit hashcode
+Diff hashcode and equals method
+Create customized hashset
+
+Concurrent HashMap -  https://www.javainuse.com/java/javaConcurrentHashMap
+Features - Allows read not to be locked.
+While write only specific bucket is locked and not complete map.
+Iterator is fail safe i.e. it will not throw exception if underlying ds is changed.
+
+ConcurrentHashMap does not allow NULL values, so the key can not be null in ConcurrentHashMap
+ConcurrentHashMap doesn’t throw a ConcurrentModificationException if one thread tries to modify it, while another is iterating over it. From <https://www.geeksforgeeks.org/concurrenthashmap-in-java/>
+
+A ConcurrentHashMap has internal final class called Segment so we can say that ConcurrentHashMap is internally divided in segments of size 32, so at max 32 threads can work at a time. It means each thread can work on a each segment during high concurrency and atmost 32 threads can operate at max which simply maintains 32 locks to guard each bucket of the ConcurrentHashMap
+From <https://dzone.com/articles/how-concurrenthashmap-works-internally-in-java>
+
+Interface cannot implement interface - https://medium.com/javarevisited/why-an-interface-can-not-implement-another-interface-b298d0290b1
+
+Default and static methods in java 8 - eg of basicCalculator.add () where basicCalculator class implements calculator interface so we are not implementing interface but its implementation. So to avoid this we created new factory class which return new instance. But instead we can add static method in calculator i.e. static getInstance().
+
+Now in calculator interface some users need reminder method too. So if we directly add it in there it will break the apis/class implementing that interface. So better add default method. So advantage is class implementing the interface is not required to provide an implementation of these methods. If an implementing class provides the implementation, then the implementing class method implementation will be used -- otherwise the default implementation will be used.
+
+Design patterns in java (Mostly observer types) - https://dzone.com/articles/design-patterns-for-beginners-with-java-examples
+Singleton -
+Factory - provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.
+
+Create singleton thread safe class without synchronized ? --> https://crunchify.com/lazy-creation-of-singleton-threadsafe-instance-without-using-synchronized-keyword/
+
+Serialization in java ?
+Serialization (converting an object into byte stream) is a mechanism in which object state is read from the memory and written into a file or database. Deserialization (converting byte stream into an object) is the opposite of serialization means that object state reading from a file or database and written back into memory is called deserialization of object.
+
+Collections overview -
+https://www.baeldung.com/java-collections-interview-questions
+https://www.javatpoint.com/java-collections-interview-questions
+
+Comparable and Comparator -
+Eg :- Person class has to be sorted acc to ranking, default sorting will not work. So we will implement comparable and as it implements comparable so it gets ability of compareTo its same kind depending on rank. So compare() takes only one argument. Eg:- student standing in line height wise  they have comparable implemented by height.
+But if I want to sort by the names they can't do on their own. So implement comparator whose a 3rd party and not capability of own. So comparator.compare() takes 2 arguments i.e. student1, student2 to do the comparison. Also comparator.compare() takes precedence over default sorting. Easy way of remembering.
+
+Sometimes we can't modify the source code of the class whose objects we want to sort, thus making the use of Comparable impossible. Using Comparators allows us to avoid adding additional code to our domain classes
+We can define multiple different comparison strategies, which isn't possible when using Comparable
+From <https://www.baeldung.com/java-comparator-comparable>
+
+Why to create Constant ?
+Single place updation and jvm effective as it doesn’t change.
+
+What is volatile , transient and its use cases?
+Volatile - Used to save changes directly to memory instead of CPU cache. Use case -> When a variable has to be mutable and accessed by different threads. Eg:- https://stackoverflow.com/a/63754630
+Transient - Variable marked as transient is skipped of serialization and deserialization.
+
+Shallow copy vs Deep copy ?
+Shallow copy points to the reference and deep copy is assigning values of existing and create new reference. Shallow copy is faster.
+
+Marker Interfaces - They don’t have any methods or instances . Used in Serializable and cloneable.
+Marker interfaces, also known as tagging interfaces are those interfaces that have no methods and constants defined in them. They are there for helping the compiler and JVM to get run time-related information regarding the objects
+https://www.baeldung.com/java-marker-interfaces
+
+When to use abstract class vs interface in java 8?
+Earlier to have common implementation we used abstract class but now interface supports default methods then why?
+The key difference is that an abstract class can maintain a state but the interface cannot, and an abstract class can also have a constructor that is not allowed inside the interface even in Java 8.
+	•  If you are designing API then use interface and if you are abstracting both state and behavior then use an abstract class.
+	• Abstract classes should be used primarily for objects that are closely related, whereas interfaces are best suited for providing a common functionality to unrelated classes.
+	• Interfaces are a good choice when we think that the API will not change for a while.
+	• Interfaces are also good when we want to have something similar to multiple inheritances since we can implement multiple interfaces.
+	• If we are designing small, concise bits of functionality, use interfaces. If we are designing large functional units, use an abstract class.
+
+Multi-threading -
+
+Old ways of creating thread -
+Implements Runnable and extends Thread . But we can do by using both at same time and it works fine.
+Thread.run - Its like in main thread a method is executed and no new thread creation is done.
+Thread.start - It actually spawns a new thread internally and then execution of run() on new thread happens.
+
+What is cyclic barrier and countdown latch? CountdownLatch vs CyclicBarrier
+
+Real World Example I can see that all the answers are actually missing a real example. As in how these classes can be used in a software realm
+	CountDownLatch A Multithreaded download manager. The download manager will start multiple threads to download each part of the file simultaneously.(Provided the server supports multiple threads to download). Here each thread will call a countdown method of an instantiated latch. After all the threads have finished execution, the thread associated with the countdown latch will integrate the parts found in the different pieces together into one file
+	CyclicBarrier Same scenario as above..But assume the files are downloaded from P2P. Again multiple threads downloading the pieces. But here, suppose that you want the intergity check for the downloaded pieces to be done after a particular time interval. Here cyclic barrier plays an important role. After each time interval, each thread will wait at the barrier so that thread associated with cyclibarrier can do the integrity check. This integrity check can be done multiple times thanks to CyclicBarrier
+Please correct me if anything not proper. From <https://stackoverflow.com/questions/10156191/real-life-examples-for-countdownlatch-and-cyclicbarrier>
+
+Ways to create thread in java - https://www.studytonight.com/java/creating-a-thread.php . We need Thread and Runnable both to have multi-threading. Also implement runnable has to override run compulsory.
+Implements thread can skip run method implementation but then it will behave in default way and not what we wanted.
+Cached Thread pool vs FixedThreadPool - https://www.tutorialspoint.com/difference-between-fixed-thread-pool-and-cached-thread-pool
+Check future, executor, callable - https://dzone.com/articles/basics-of-using-java-future-and-executor-service
+Future <V> is an interface that represents the result of an asynchronous computation. Once the computation is finished, you can obtain the result of it by using the get() method. Bear in mind that this is a blocking operation.
+To retrieve value we can use get() with timeout of isDone().
+
+ExecutorService represents an abstraction of thread pools and can be created by the utility methods of the Executors class. These methods can initialize a number of executors depending on the purpose they will be used for.
+Ways to delegate is, execute(), submit(), invokeAny(), invokeAll(). These methods take callable type of task or otherwise like its done in productivity.
+
+Lastly to close threads from thread pool use - shutDown() or shutDownNow().
+Callable is an interface that stands for a task that returns a result after some computations. This class contains our business logic, and every time a task starts, the call() method is executed.
+Application - complex calculations, call web service or remote service, work with large sized data structure.
+
+https://www.geeksforgeeks.org/difference-between-executorservice-execute-and-submit-method-in-java/
+Diff between execute and submit for Executor interface.
+Execute Method	Submit Method
+This method is declared in the Executor interface.	This method is declared in the ExecutorService interface which implements Executor interface.
+This method can accept only runnable task. 	This method can accept both runnable and callable tasks.
+This method has a return type of void.	This method has a return type of Future.
+This method is used when we are not bothered about the result but want the code to run in parallel by the worker threads of the thread pool.	This method is used when we care about the result and need it from the task which has been executed.
+
+Callable - Future : https://www.geeksforgeeks.org/callable-future-java/
+Has call method in interface which has ability to return some value i.e. Future and not void. Runnable whereas doesn’t return anything is always void. Runnable doesn’t support exception handling.
+
+Difference between Future and CompletableFuture :- https://www.linkedin.com/pulse/java-8-future-vs-completablefuture-saral-saxena/
+Future is result if async task isDone() to check completion of computation , get() to retrieve result of computation. There's no call back attached to future and hence we aren't notified when it's completed rather it is has get() which blocks until result is returned.
+
+CompletableFuture has ability to attach callback so it doesn’t have a blocking call. If service returning result of future is down we can manually complete it. Multiple futures can be combined together. Also has exception handling ability.
+
+Thread - Safe
+If this bank account is not threadsafe, then the bank allows you to perform two transactions at the same time and then the bank will become bankrupt.
+Threadsafe means that an object's state doesn't change if simultaneously multiple threads try to access the object.
+From <https://stackoverflow.com/questions/2033879/what-does-threadsafe-mean>
+
+Exception
+Checked - Exceptions that occur at compile time i.e FileNotFoundException, IOException, SQLParseException. Exception is parent of checked exception.
+Unchecked - Exceptions that occur runtime due to logic error i.e. ArithmeticException, ArrayIndexOutOfBoundsException, IllegalArgumentException.
+Guide says "If client can reasonably be recovered from exception throw checked if not throw unchecked"
+RuntimeException are unchecked while Exception are checked (calling code must handle them).
+
+The custom exception should extends RuntimeException if you want to make it unchecked else extend it with Exception.
+With unchecked exceptions calling code method is not required to declare in its throws clause any subclasses of RuntimeException that might be thrown during the execution of the method but not caught.
+Runtime exceptions can occur anywhere in a program, and in a typical one they can be very numerous. Having to add runtime exceptions in every method declaration would reduce a program's clarity. Thus, the compiler does not require that you catch or specify runtime exceptions
+
+Criteria	Unchecked exception	Checked exception
+Purpose	Unanticipated errors in logic that show up at runtime	Anticipated problems associated with the normal use of an API
+Ancestry	Includes RuntimeException	Does not include RuntimeException
+Handling	Exception handling semantics are not required	Must be handled in a try-and-catch block, or be thrown by the invoking method
+Extension	Can be customized by extending RuntimeException	Can be customized by extending java.lang.Exception
+List of examples	NullPointerException, ClassCastException, ArithmeticException, DateTimeException, ArrayStoreException	ClassNotFoundException, SocketException,
+		SQLException, IOException, FileNotFoundException
+
+
+Memory allocation in java -  https://www.baeldung.com/java-stack-heap
+
+What is autoboxing and unboxing ?
+Autoboxing - When a primitive type is automatically converted into its object equivalent i.e. its wrapper class.
+Eg:- Integer I = 32;
+Unboxing is opposite of autoboxing.
+Eg:- int i1 = new Integer(41);
+
+When no access modifier is mentioned what is internally taken ?
+Default - package level access.
+
+Why java is not fully object oriented?
+Because of its primitive data types, also static keyword.
+
+Is Java compiled or interpreted language ? - https://stackoverflow.com/a/1326084
+
+Equals() and hashcode() from object class -
+In java equals() method is used to compare equality of two Objects. The equality can be compared in two ways:
+Shallow copy - checks if two Object references (say x and y) refer to the same Object. i.e. It checks if x == y.
+Deep copy - means data members (i.e. fields) of Objects are to be compared with one another. For this we have to override equals to say which fields to compare.
+https://www.javatpoint.com/how-to-compare-two-objects-in-java
+
+Can static methods be overloaded or overridden ?
+Overloading is the mechanism of binding the method call with the method body dynamically based on the parameters passed to the method call. Static methods are bonded at compile time using static binding. Therefore, we cannot override static methods in Java. Overloading is still possible.
+
+Final keyword usage -
+
+For instance var -
+For method -
+For class -
+
+Diff btwn static and final?
+Final doesn’t lock value to be overridden so its value can be changed. Whereas static is on value only as with class name we access and update properties. Also static ensures same value across multiple instances.
+Eg:-
+Employeee=newEmployee(1,"aa");
+finalEmployeebb=e;
+//bb=null;//This does not work.
+e.setName("cc");//this means value within reference is not final.
+System.out.println("emp1"+e.getName());
+System.out.println("emp11"+bb.getName());
+
+How to overcome class cast exception?
+In order to deal with ClassCastException be careful that when you’re trying to typecast an object of a class into another class ensure that the new type belongs to one of its parent classes or do not try to typecast a parent object to its child type. While using Collections we can prevent ClassCastException by using generics because generics provide the compile-time checking.
+
+What is try with resource? - https://www.baeldung.com/java-try-with-resources
+It means wrap declaration and initialization of resource in try keyword. Multiple resources can be declared here with semicolon.
+These resources need to implement auto closeable interface which has close method in it. Order of closing resource is first resource at last and likewise.
+
+Diff Map and flatMap ? --> Map be like [a,b] or [[a],[b] ] but flatMap will then make double list to [a,b]. https://www.baeldung.com/java-difference-map-and-flatmap
+
+How generics work internally? https://www.devinline.com/2014/02/how-generics-works-internally-in-java.html
+
+Blocking queue and it working and features - https://www.baeldung.com/java-blocking-queue
+
+Access modifiers in java -
+
+Modifier    | Class | Package | Subclass | World
+public|  Y    |    Y    |    Y     |   Y
+protected|  Y    |    Y    |    Y     |   N
+no modifier |  Y    |    Y    |    N     |   N
+private|  Y    |    N    |    N     |   N
+
+Http Methods -
+
+What is rest api ?
+REpresentational State Transfer (REST) is an architectural style that defines a set of constraints to be used for creating web services. REST API is a way of accessing web services in a simple and flexible way without having any processing.
+All communication done via REST API uses only HTTP request. RESTful web services are very popular because they are light weight, highly scalable and maintainable and are very commonly used to create APIs for web-based applications.
+
+What is RESTful ? - The service that follows all constraints of REST i.e. stateless, using HTTP protocol, access resource from url only, no inbuilt encryption or session, uses HTTP method to access data from server, returns data in lightweight format like JSON, XML.
+
+What is stateless in REST - It doesn’t know about previous request and its response so say it doesn’t hold anything which will help us to know state of requests or application.
+
+Why idempotence is necessary - https://restcookbook.com/HTTP%20Methods/idempotency/
+
+PUT - Updated the detail of user if exist or else creates new entity.
+POST - Creates new resource on server so it won't return same result if called 10 times. It's not idempotent.
+
+HTTP Method	Idempotent	Safe
+OPTIONS	yes	yes
+GET	yes	yes
+HEAD	yes	yes
+PUT	yes	no
+POST	no	no
+DELETE	yes	no
+PATCH	no	no
+
+From <https://restcookbook.com/HTTP%20Methods/idempotency/>
+
+Patch - it supports update of one field only and can pass op = move , copy so it can do internal multiple operations so it's not idempotent.
+OPTIONS - this api returns which request methods a server supports for the api.
+HEAD - returns just the headers and not data for the api.
+
+Difference between PUT and PATCH
+
+PUT
+If I had to change my first name then send PUT request for Update:
+{ "first": "Nazmul", "last": "hasan" }
+So, here in order to update the first name we need to send all the parameters of the data again.
+Also we update for a identifier so before update we check if it exists or not. If doesn’t exist we create it with updated value otherwise get identifier  and update it
+PATCH:
+Patch request says that we would only send the data that we need to modify without modifying or effecting other parts of the data. Ex: if we need to update only the first name, we pass only the first name.
+Before update we try to check for existing
+
+From <https://stackoverflow.com/questions/31089221/what-is-the-difference-between-put-post-and-patch>
+
+Authentication i.e. JWT based study - This is asymmetric auth where not just the creator but receiver can decode the token using public key. Client server model where server generates a JAWT token from a JSON payload and signs it with his private key and sends to client with some validity time. Client can verify the token at his end by taking public key of server and if its valid proceed ahead. Consider auth server gives this token and client takes this and sends in request to server.
+Disadvantage -
+	1. Secret data can't be used to generate token as token can be decoded and read data from it.
+	2. Once token lost , it can't be disabled. So server can maintain blacklisted jwt when client informs his jwt is stolen.
+	3. Also if token is taken other person can authorize as u. So use this in conjunction with other mechanims like Oauth.
+Verify of signature can be done with both private and public key.
+
+Oauth - Used for Authorization.
+Flow 1 :-
+	1) Client send request to server of photo printing which will be resource holder later.
+	2) This server sends request to Authorization server which can be in same server as the resource holder eg:- google server or separate.
+	3) The Auth server then knows its companion service has sent this req but it still sends req to the actual user to take permissions from. Once the user approves then auth token is sent to Photo service.
+	4) Photo service then sends back this auth token to auth server and says give me the access token.
+	5) This access token is then sent to resource server everytime service needs the resource.
+Implicit flow :-
+All steps are similar except for the auth server shares directly access token which can be tapped.
+Disadvantage :-
+	• Can be used with js application where token is just not so secure as we have to store the auth token in browser.
+	• Access token are short lived.
+	• Not so secure. (This can be in case of 1st flow too, but we can send auth token in secure way using jwt so access token returned is not tampered.)
+Client Credentials flow (Client is very well trusted, also known for our internal or own micro services)
+	1. There is a user service which performs operation on user info like
+
+Class Loader
+https://www.baeldung.com/java-classloaders
+They follow a hierarchy at top being bootstrap, extension and system loader. Delegation too happens in same manner eg:- System, loader delegates to extension and then to bootstrap loader. If each one tries and can't find then it propagates back as was delegated.
+
+Memory Management
+https://www.baeldung.com/java-memory-management-interview-questions
+
+Constructor can't be made synchronized why? -
+It's much clearer if you quote what the JLS actually says: "There is no practical need for a constructor to be synchronized, because it would lock the object under construction, which is normally not made available to other threads until all constructors for the object have completed their work."
+https://stackoverflow.com/questions/4880168/why-cant-java-constructors-be-synchronized
+
+Covariant return type -
+Covariant return, means that when one overrides a method, the return type of the overriding method is allowed to be a subtype of the overridden method's return type.
+From <https://stackoverflow.com/questions/1882584/what-is-a-covariant-return-type>
+
+Kafka Video Explanation
+Topic, partition and offset - Kafka Topics, Partitions and Offsets Explained
+Consumer and groups - Kafka Consumer and Consumer Groups Explained
+Producer - Kafka Producers Explained
+Broker and data replication -Kafka Brokers and Data Replication Explained
+
+Design patterns used in some java library classes are -
+	• Decorator design pattern used in various Java IO classes,
+	• Singleton pattern used in Runtime, Calendar,awt.Desktop and various other classes,
+	• Factory pattern used along with various Immutable classes likes Boolean e.g. Boolean.valueOf
+	• and Observer pattern used in Swing and other event listener frameworks.
+	• Builder — this pattern helps us to construct complex objects with the help of simpler interfaces. Examples are:
+		• java.lang.StringBuilder
+		• java.util.stream.Builder
+More details at - https://azeynalli1990.medium.com/10-software-design-patterns-used-in-java-core-libraries-8fe2651d4f11
+
+Does abstract method have constructor and why?
+You would define a constructor in an abstract class if you are in one of these situations:
+	• you want to perform some initialization (to fields of the abstract class) before the instantiation of a subclass actually takes place
+	• you have defined final fields in the abstract class but you did not initialize them in the declaration itself; in this case, you MUST have a constructor to initialize these fields
+Note that:
+	• you may define more than one constructor (with different arguments)
+	• you can (should?) define all your constructors protected (making them public is pointless anyway)
+	• your subclass constructor(s) can call one constructor of the abstract class; it may even have to call it (if there is no no-arg constructor in the abstract class)
+
+From <https://stackoverflow.com/questions/260666/can-an-abstract-class-have-a-constructor>
+
+
+
+
+When RDBMS and NoSQL clear your thoughts.
+
+	RDBMS	NoSQL
+1	Structure is predefined and changing it is  very difficult.	Dynamic schema with unstructured data. Types are key-value, document, column and graph.
+2	Vertically scalable as supports transaction. Eg:- Banking transaction can't happen on 2 different cpu's .So we can add only CPUS , RAM for vertical scale.	Horizontally scalable as doesn't support transaction.  This make it more powerful over RDBMS.
+3	SQL is better for multi row transaction and accounting system and legacy systems.	NoSQL are for big data as flexibility is needed for dynamic schema.
+4	SQL db are faster for joins , queries and updates as they are normalized meaning db is broken down in tables to avoid data redundancy.	NoSQL has document-oriented, column-oriented, graph based. Particular data entity is stored together and not partitioned hence read and write for single entity is faster.
+5	SQL doesn’t support vertical scale so sharding is needed either horizontal i.e. rows across instances or vertical sharding i.e columns on diff db instances.	NoSql by default supports horizontal scale.
+6	SQL provides transaction support like "A send 200 to B". So we can update in accounts db row for A and B. Also in statement table and transaction table too. So if any of this fail we can revert it.	NoSQL provides document level atomicity so if eg:- accounts has user1 and user2 its not guaranteed if user1 update success and user2 update fail then revert is not possible. Reason is horizontal partition.
+
+
+
+Difference between enumeration and iterator.
+Enumeration	Iterator
+Using Enumeration, you can only traverse the collection. You can’t do any modifications to collection while traversing it.	Using Iterator, you can remove an element of the collection while traversing it.
+Enumeration is introduced in JDK 1.0	Iterator is introduced from JDK 1.2
+Enumeration is used to traverse the legacy classes like Vector, Stack and HashTable.	Iterator is used to iterate most of the classes in the collection framework like ArrayList, HashSet, HashMap, LinkedList etc.
+Methods : hasMoreElements() and nextElement()	Methods : hasNext(), next() and remove()
+Enumeration is fail-safe in nature.	Iterator is fail-fast in nature.
+Enumeration is not safe and secured due to it’s fail-safe nature.	Iterator is safer and secured than Enumeration.
+
+Singleton Pattern
+Static Class
+Singleton is a design pattern.
+Static classes are basically a way of grouping classes together in Java.
+Memory is allocated once the object is created.
+Memory is allocated immediately after any of the class members is accessed.
+Singleton implementation can either have static members or instance members.
+Static classes can contain static members only.
+It can implement any other interface or base class is required.
+It cannot implement the interface or any other base class.
+Singleton classes can be used as a method parameter.
+Static class cannot be used as a method parameter.
+Singleton pattern uses Heap memory.
+Static classes use stack memory.
+It works within the scope of Garbage Collector as it uses Heap memory.
+Out of scope for Garbage Collector as it uses stack memory.
+It supports Dependency Injection (DI) implementation as Singleton follows OOPS concepts.
+It cannot implement Dependency Injection (DI) as DI is Interface-driven.
+Singleton is an architectural pattern and not a language feature.
+Static is a language feature and not an Architectural pattern.
+Disposal of objects is possible.
+It cannot dispose of the static class as there is no instance created
+URI	URL
+URI is an acronym for Uniform Resource Identifier.	URL is an acronym for Uniform Resource Locator.
+URI contains two subsets, URN, which tell the name, and URL, which tells the location.	URL is the subset of URI, which tells the only location of the resource.
+All URIs cannot be URLs, as they can tell either name or location.	All URLs are URIs, as every URL can only contain the location.
+A URI aims to identify a resource and differentiate it from other resources by using the name of the resource or location of the resource.	A URL aims to find the location or address of a resource on the web.
+An example of a URI can be ISBN 0-486-35557-4.	An example of an URL is https://www.javatpoint.com.
+It is commonly used in XML and tag library files such as JSTL and XSTL to identify the resources and binaries.	It is mainly used to search the webpages on the internet.
+The URI scheme can be protocol, designation, specification, or anything.	The scheme of URL is usually a protocol such as HTTP, HTTPS, FTP, etc
+
+From <https://www.javatpoint.com/uri-vs-url>
+
+

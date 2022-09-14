@@ -1,0 +1,331 @@
+Tech Verito
+
+Director Round
+
+What is diff btwn REST and GRPC?
+	Sr No	                     REST	                                 GRPC
+	1)	          Uses HTTP 1.0 and 2.0	                                Uses HTTP 2.0 only
+	2) REST is architecture for designing apis without enforcing. 	gRPC enforces rules by defining a .proto file that must be adhered to by both client and server for data exchange
+	3) REST typically uses JSON and XML formats for data transfer.	gRPC relies on Protobuf for an exchange of data
+	4) JSON or XML that requires serialization and conversion into the target programming language for both client and server, thereby increasing response time and the possibility of errors while parsing the request/response	gRPC provides strongly typed messages automatically converted using the Protobuf exchange format to the chosen programming language
+	5) HTTP 1.1 requires a TCP handshake for each request. Hence, REST APIs with HTTP 1.1 can suffer from latency issues	HTTP/2 protocol, which uses multiplexed streams.
+			several clients can send multiple requests simultaneously without establishing a new TCP connection for each one
+	6) Grpc is 7 times faster when receiving data and 10 times faster while sending due to tight packing of proto buffer and http2.
+
+Within a test we have interface passed in and we don’t want the actual object and even the mocked object of it? How will we test register then?
+What is value object read about it?
+What are real life application of graph api ? Heavy computation needed. I said online booking systems like flight booking.
+How do you approach a problem you face eg:- proto implementation and voice skills.
+
+
+For Him
+What is this bootcamp heard a lot about it? - training for a month.
+How are teams formed? What's the total size?
+Clients are in which domain?
+Do we follow pair programming? - Not mostly
+How is the culture of org
+
+
+DB Bank Fullstack
+
+Stream question like sort, extract ids and
+What is thread local
+Atomic integer
+Diff runnable and callable --> Runnable is void and callable returns future.
+Internal working of hasmap
+If interface has one default and only one abstract method is it still functional interface? Yes it is.
+Cyclic barrier in multithreading? --> https://www.baeldung.com/java-cyclic-barrier
+Cyclic barrier vs countdownLatch --> https://www.baeldung.com/java-cyclicbarrier-countdownlatch#:~:text=As%20stated%20in%20the%20definitions,maintains%20a%20count%20of%20tasks.
+When do you use lambda.
+What is graph api or its graphQl and why is it replacing REST API's?
+
+DB Bank L2 Interview
+
+	1. Can singleton scope be assigned to prototype? Yes it can be injected -- https://www.quora.com/Can-singleton-bean-be-injected-into-prototype-bean
+	2. How can you make below class immutable? How can you handle address here as its reference is coming from outside?
+Class Employee{
+String name;
+Int id;
+Address a;
+}
+Answer :- So from employee getAddress(){ return new Address(a.getPinCode());}
+This will return new reference of it and not original one so any mutation in original one by setter of Pincode wont reflect in employee class.
+
+	3. How to create a singleton class and make sure it works in multithreading?
+Ans :- synchronized Person(String name, int id){
+	This.name = name;
+	This.id = id;
+	}
+	4. What is setter dependency injection?
+	5. Take multiple thread and below should be the output?
+	T1 :1
+	T2: 2
+	T3 : 3
+	T1: 4
+	T2: 5 ….
+	Check how to do using wait notify and synchronized here.
+
+	4. Given a array remove duplicates from it?  //could have used set here.
+int[] a = {1,3,2,4,5,2,3,2};
+int[] output = new int[a.length()];
+for(int i =0; i< a.length();i++){
+	for(int j = i+1 ; j< a.length();j++){
+  	if(a[i] == a[j])
+
+  }
+}
+
+	5. Given below implementation of interface how do you pass it to the
+Interface something
+Class abc implement something
+Class xyz implement something
+
+class Aplha{
+
+@Autowird
+abc a
+
+@Autowired
+Xyz x
+
+Aplha(Abc a){
+
+}
+}
+
+/**UI**/
+
+	1. Create component without using ng create ?
+	2. How do unrelated components talk?
+	3. Syntax for two way binding write it?
+
+	4. How can you extract banana quantity from json data.
+const jsonData = [
+  {name: 'apples', quantity: 2},
+  {name: 'bananas', quantity: 4},
+  {name: 'cherries', quantity: 5}
+];
+
+	5. Highlight 3rd li to be bold only.
+<ul id="info">
+	<li>First line element</li>
+	<li>Second line element</li>
+	<li>Third line element</li>
+	<li>Fourth line element</li>
+</ul>
+
+.li
+	font-style :bold;
+
+	6. Add a style to make ul background colour to be red?
+.ul ::hover
+	background-color : red;
+ 7. What is interpolation? How does it work?
+{{name}}
+String name = "shivali"
+	8. How to add validation for text box in username and password?
+pattern="/d[0-9][a-z][A-Z]"
+
+text | filter =
+
+Accenture
+How to solve problem of cold start in lambda.
+
+Scadea
+Can you write custom queries and stored procedures in JPA ?
+Can you have 2 databases configured in springboot application?
+Given employee data how can you print employees using lambda functions?
+Given arraylist remove 3rd and 7th index data which index will be removed first?
+Input is large file you have to read and write it but processing has to be faster how will you do it?
+
+CloudReach
+
+Convert yaml to json
+Eg:-
+workload:
+  name:java
+preference :
+  name:windows
+
+Insert in mongo db data where key is yaml file and value is csv file. When I try to access with eg: java should return value for it.
+Design architecture and tasks to have login form and select a file and upload it on s3? Identify its component and which technologies will you choose?
+What does GRPC offer over REST? (Streaming of data)
+
+NICE
+
+	1. What advantages do you find for stream and lambda in terms of processing?
+	2. Explain internal working of hashmap?
+	3. Is crossbar like a adapter plug and play?
+	4. Is default access modifier same as protected?
+	5. Can response entity of type stream be returned as responseEntity type?
+
+Dell
+Round 1
+	1. Design a rest api for comments on photo and its db schema design.
+		GET, POST, PUT, DELTE with its response code
+		https://fb.com/v1/post/id/comment - POST 201 created
+		https://fb.com/v1/post/id/comment/id - GET , DELETE, PUT 200 OK
+
+		Post table has - post id , post url
+		Comment table has - post id , comment id , comment, parent id , parent type
+
+		Parent type is necessary to identify if parent is photo or comment itself.
+		Parent id is to find out parent comment or parent post.
+
+	2. Create a singleton class in java?
+	3. What's difference between path param and query param? The path parameter defines the resource location, while the query parameter defines sort, pagination, or filter operations.
+	4. One problem from leetcode of search in rotated array.
+
+Forge Data
+
+What is docker and hows it useful.
+What is static and final keyword in java?
+Is java fully oop language?
+If the data is to be stored where unique elements have to be stored what ds will you prefer i.e hash set, linked hashset, tree set? --> hashset. 2nd when order of insertion has to be maintained, treeset when sort has to done while inserting.
+In project how long is the session of crossbar exist?
+What should be done when a session is disconnected? Does extend service try to reconnect once or twice?
+
+Tsystems
+
+One interface extends other and no method in child and only one abstract method in parent? Will this compile?
+If I have one method in child and one in parent will this compile now?  --> This will not compile as it expects only one abstract method and get 2.
+What is diff in static and singleton? -
+What properties can break singleton?
+How to solve circular dependency in springboot without extracting to third service? -- Lazy loading, @PostConstruct, InitializeAwareContext,
+What is factory and abstractFactory design pattern?
+How to make singleton class thread safe? Add synchronized at class or constructor or method? (Make synchronized at getInstance method or inside that a sync block)
+Can we add synchronized at constructor does it compile while making class singleton? --> No it doesn’t compile and some people suggest to use syn block within constructor when there's some need of that sort.
+What is difference between collection and stream?
+Name any library that uses any design pattern of java eg:- Calculator is singleton?
+Explain internal working of hashset?
+Diff btwn synchronized and concurrent hashmap?
+
+Altimetrik
+
+What is URI?
+What is consumer and provider in rest?
+What is statefulness or statelesness?
+What is @enableAuto configure?
+Explain microservice architecture and its disadvantage?
+What is map and flatmap?
+What is Domain driven design in rest?
+Implement example of Liskov substitution? I did using inheritance.
+
+Globant
+
+What is covariant? In java notes
+Does abstract method have constructor?
+What is the use of abstract method?
+What is relation between equals and hascode?
+Explain basic oops concept?
+Can overriding method return type be diff than actual one?
+Explain overriding and overloading?
+Explain exception and its hirerachy?
+Tell me about executor interface?
+Sql query to remove duplicates user?
+Sql query to remove users whose age > 30?
+What is streams and lambda explain about them?
+
+Nagarro Round 1
+
+What is docker compose?
+Docker compose is used to combine multiple services as one and execute it. Eg:- A Nginx service and redis db can be together executed in compose file which can be in yml. Supports command like docker compose up , down and scale , ps ,etc.
+https://www.simplilearn.com/tutorials/docker-tutorial/docker-compose
+
+Diff btwn entry point and cmd in docker? -->  https://www.bmc.com/blogs/docker-cmd-vs-entrypoint/
+CMD -  command has default parameters that can be overridden by command line args. These are like additional set of arguments.
+ENTRYPOINT - this command parameters can't be overridden and is always with command line args rather with compulsory parameters command line args are appended at end. These instructions  are added when needed always while docker image build.
+
+What is db propagation? -- in spring notes
+How do you handle distributed transaction across microservices? --> We can't handle transaction across diff instance they have to be each diff transaction.
+What is circuit breaker states i.e  - its in sb notes.
+What is try with resource?
+What is view resolver in springboot?
+What is diff btwn Future and Callable future? -- in java notes.
+What is callable interface? -- in java notes
+What is custom named queries in JPA? -Way of defining custom queries at entity level when we have nativeQuery or smaller application.
+Can we have more than one controllerAdvice? No only one.
+Stream function to get unique strings out of duplicate? With distinct operator or with collecting it to set.
+Stream function to get names list out of list of employees?
+What is disadvantage of cached thread pool ?
+
+Globant Round 2
+
+One coding problem - merge sorted array into 3rd sorted array.
+One Design problem.
+How do you decide whether abstract or interface as interface has concrete methods like static, default i.e. getInstance.
+Db problem statement to get Employees from employee table that are not in salary table do not use subquery. Had to do this with left outer join.
+While inserting if I don’t want to add same record how to avoid it?
+	Check if exist before insert.
+	Use unique key constraints.
+Diff between patch and put ? In java notes
+
+Integral Ads Round 1
+
+Coding problem - given array create new array with input array duplicated i.e 123 -> 123123
+Where can be synchronized used -> methods , blocks and not class.
+How synchronized works internally?
+Can static methods be synchronized?
+What is ACID and explain each?
+Given employee table return employees whose name starts with "s"?
+Thread problem where we try to start same thread 2 times , what will be output ? Will it print statements from main and run? --> throws exception but prints statement of run method.
+If a class extends thread and implements  runnable and we call run and start on it will it run? --> Yes it does as both class and interface contract are fulfilled so no problem with that.
+Asked a question on streams. What will be its output?
+What is intermediate, terminal operation on stream ?
+If we use hashmap and key and value as string and collision occurs how can you overcome it with default implementation of methods in String class?
+When should I use linkedList vs ArrayList?
+
+Perforce
+
+Can base class throw Checked i.e SQLException and extending class throw Exception ? --> No
+Can base class throw Checked and extending Unchecked exception ? --> No you can throw exception of type which base class is throwing.
+How does auth server share the access token from authorization server in Oauth flow?
+How generics works internally?
+
+Nagarro Round 2
+
+When do we make customException implement Exception or RuntimeException ? --> Exception is extended when we want them to handle it compulsory and RuntimeException when its ok even if not handled.
+What is aggregation and composition ?
+	Composition -> IS a part-of relation. Both entities are dependent on each other. In composition, composed object cannot exist without other entity.
+	Aggregation -> Has a relation. Both entities can survive individually. Its unidirection i.e. 1- * meaning class can have students and not vice versa.
+
+Barclays Round 1
+
+Given binarytree write psuedocode to print sum of its right leaf nodes only?
+
+Create hashmap of string string and stringbuffer, string and add same key and duplicate value , find its size? --> first its size 1, 2nd its size 3. Coz string overrides equals and hashcode whereas later overrides object equality so in case of stringbuffer only objects are compared whereas in String their values are compared.
+
+What is tryWithResource and how to make it works with custom class?
+Java 8 code to print duplicates from list of integer?
+Java 8 code to print duplicate strings and their count with string grouping? Eg:- a-1, b-2,c-1,d-4 from input[a,b,c,d,b,d,d,d]
+What is RESTful vs REST service?
+Explain JVM architecture?
+What is class loading in java?
+What is blocking queue? --> java notes
+
+Citi Telephonic
+
+1)How to create singleton thread safe class? Just make synchronized is not good even just sync block is not efficient what's the efficient way? -- > https://crunchify.com/lazy-creation-of-singleton-threadsafe-instance-without-using-synchronized-keyword/
+2)Difference between factory and abstract Factory?
+3)Given list of cars sort them with year(2009,2010,2008) and color(1-R,2-G,3-B)? --> Multilevel sort as explained.
+
+Barclays Round 2
+
+When array list has to increase in size so copy of elements is parallel or sequential?
+How can single controller method handle POST and PUT for /hello api?
+If I have single thread doing iteration and updation how can you avoid concurrentModificationException? --> Don’t have answer for this.
+What are different design patterns in spring ? --> template, adapter
+How to hash set avoid duplicates while put?
+Given map with String , Int how will you sort by values ? --> Used the stream eg.
+Given an employee list return data sorted by name and salary? --> Use stream and try this out.
+Two thread explain how to print the even odd numbers separately?
+Print 2nd highest salary from employee table?
+Diff between fixed and cached thread pool? --> java notes
+
+
+
+
+
+
+
+
